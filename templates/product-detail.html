@@ -1,0 +1,78 @@
+{% extends "base.html" %}
+
+{% block body %}
+
+<div class="container">
+    <ul class="u-padding-top-smaller u-hidden-xs-flex breadcrumbs">
+        <li class="breadcrumbs__item">
+            <a href="#" class="text text--color-light text--extralight text--smaller breadcrumbs__link">Inicio</a>
+        </li>
+        <li class="breadcrumbs__item">
+            <a href="#" class="text text--color-light text--extralight text--smaller breadcrumbs__link">Mujeres</a>
+        </li>
+        <li class="breadcrumbs__item">
+            <a href="#" class="text text--color-light text--extralight text--smaller breadcrumbs__link">Sandalias Mujer</a>
+            <a href="#" class="text text--color-light text--extralight text--smaller breadcrumbs__link">Ver Más Sandalias Mujer</a>
+        </li>
+    </ul>
+    <div class="section-product">
+        <!-- product detail goes here -->
+    </div>
+    <div class="section-suggested">
+        <div class="section-products__content-row">
+            <!-- product related -->
+        </div>
+        <div class="section-products__content-row">
+            <!-- product related -->
+        </div>
+    </div>
+</div>
+
+{% end %}
+
+<!-- ALWAYS PUT JS INSIDE THIS BLOCK AND MAKE THEM ASYNCH -->
+{% block javascript %}
+
+{% include 'components/product-list-item-small.html' %}
+{% include 'components/product-detail.html' %}
+
+<!--  javascript includes for shopping cart -->
+<!-- <script defer="defer" type="text/javascript" src="http://localhost:9000/dist/bodegas.client.js"></script> -->
+<script defer="defer" type="text/javascript" src="{{ site_base }}/common/js/bower/bodegas.client/dist/bodegas.client.min.js"></script>
+<script type="text/javascript" defer="defer">
+    // Shopping cart
+    // =============
+    window.addEventListener('DOMContentLoaded', function() {
+        (function($) {
+            $(document).ready(function() {
+                $(".section-product").ecommerce(
+                    'product_detail',
+                    {
+                        'product_id': {{ product_id }},
+                        'app_public': 53,
+                        'base_url': 'https://apibodegas.loadingplay.com/',
+                        'products_per_page' : 9,
+                        'tag': '',
+                        'ignore_stock': false,
+                        'infinite_scroll': true,
+                        'checkout_url': 'https://checkout.loadingplay.com',
+                        'operator' :'or',
+                        'templateOrigin': '#product_template',
+                        'onLoad': function()
+                        {
+                            $('.section-products__content-row').ecommerce('product_box', {
+                                'app_public' : 53,
+                                'base_url' : 'https://apibodegas.loadingplay.com/',
+                                'maxProducts' : 6,
+                                'templateOrigin' : '#product_template',
+                                'tag' : '',
+                                'ignore_stock' : true
+                            });
+                        }
+                    });
+            });
+        })(jQuery);
+    });
+</script>
+<!-- /javascript includes for shopping-cart -->
+{% end %}
