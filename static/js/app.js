@@ -1,4 +1,44 @@
-$(document).ready(function () {
+/* DROPDOWN PLUGIN */
+/* =============== */
+(function($){
+
+    var plugin_name = 'dropdown';
+    $.fn[plugin_name] = function(options)
+    {
+        var settings = $.extend({}, $.fn[plugin_name].default, options);
+        var self = this;
+        var current_value = '';
+
+        if ($(self).length > 0)
+        {
+            $(self).click(function ()
+            {
+                $(self).find(".dropdown__list").fadeToggle("fast");
+            });
+
+            $(self).find(".dropdown__list-item").click(function(){
+                var new_value = $(this).attr('dropdown-val');
+
+                if (current_value === new_value)
+                {
+                    return;
+                }
+
+                $(self).trigger('change', new_value);
+                current_value = new_value;
+            });
+
+            return $(self);
+        }
+    }
+
+    $.fn[plugin_name].default = {}
+})(jQuery);
+/* / DROPDOWN PLUGIN */
+/* ================= */
+
+
+$(document).ready(function(){
 
     var $window = $(window);
     var $menuItem = $(".menu__list-item");
@@ -45,6 +85,7 @@ $(document).ready(function () {
     var $closePopup = $(".close-popup");
     var $popup = $(".popup");
     var $popupContent = $(".popup__content");
+    var stop_close_popup = false;  // block popup from closing
 
     $openPopup.click(function (e) {
         e.preventDefault();
@@ -53,20 +94,20 @@ $(document).ready(function () {
     });
 
     $closePopup.click(function (e) {
+        if (stop_close_popup)
+        {
+            stop_close_popup = false;
+            return;
+        }
         e.preventDefault();
         var target = $(this).attr("data-popup");
         $(".popup[data-popup='" + target + "']").removeClass("popup--active");
     });
 
     $popupContent.click(function (e) {
-        e.stopPropagation();
+        stop_close_popup = true;
+        // e.stopPropagation();
     });
-
-    if ($(".dropdown").length > 0) {
-        $(".dropdown").click(function () {
-            $(this).find(".dropdown__list").fadeToggle("fast");
-        });
-    }
 
     if ($(".product").length > 0) {
         var $productImg = $(".product__img");

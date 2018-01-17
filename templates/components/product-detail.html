@@ -2,25 +2,25 @@
     <div class="u-margin-top-small product">
         <div class="product__media">
             <div class="product__media-content">
-                <img src="{{! images[1]['thumb_500'] }}" alt="Imagen del producto" class="product__img">
+                <img src="{{! images[1]['thumb_200'] }}" onload="this.onload='';this.src='{{! images[1]['thumb_500'] }}'" alt="Imagen del producto" class="product__img">
                 <ul class="product__media-list">
                     <li class="product__media-list__item product__media-list__item--active">
-                        <img src="{{! images[1]['thumb_500'] }}" alt="Imagen del producto" onload="this.onload='';this.src={{! images[1]['thumb_500']}}" class="product__media-list__item-img {{! images[1]['thumb_500']|hide_if_empty}}">
+                        <img src="{{! images[1]['thumb_200'] }}" alt="Imagen del producto" class="product__media-list__item-img {{! images[1]['thumb_200']|hide_if_empty}}">
                     </li>
                     <li class="product__media-list__item">
-                        <img src="{{! images[2]['thumb_500'] }}" alt="Imagen del producto" onload="this.onload='';this.src={{! images[2]['thumb_500']}}" class="product__media-list__item-img {{! images[2]['thumb_500']|hide_if_empty}}">
+                        <img src="{{! images[2]['thumb_200'] }}" alt="Imagen del producto" class="product__media-list__item-img {{! images[2]['thumb_200']|hide_if_empty}}">
                     </li>
                     <li class="product__media-list__item">
-                        <img src="{{! images[3]['thumb_500'] }}" alt="Imagen del producto" onload="this.onload='';this.src={{! images[3]['thumb_500']}}" class="product__media-list__item-img {{! images[3]['thumb_500']|hide_if_empty}}">
+                        <img src="{{! images[3]['thumb_200'] }}" alt="Imagen del producto" class="product__media-list__item-img {{! images[3]['thumb_200']|hide_if_empty}}">
                     </li>
                     <li class="product__media-list__item">
-                        <img src="{{! images[4]['thumb_500'] }}" alt="Imagen del producto" onload="this.onload='';this.src={{! images[4]['thumb_500']}}" class="product__media-list__item-img {{! images[4]['thumb_500']|hide_if_empty}}">
+                        <img src="{{! images[4]['thumb_200'] }}" alt="Imagen del producto" class="product__media-list__item-img {{! images[4]['thumb_200']|hide_if_empty}}">
                     </li>
                     <li class="product__media-list__item">
-                        <img src="{{! images[5]['thumb_500'] }}" alt="Imagen del producto" onload="this.onload='';this.src={{! images[5]['thumb_500']}}" class="product__media-list__item-img {{! images[5]['thumb_500']|hide_if_empty}}">
+                        <img src="{{! images[5]['thumb_200'] }}" alt="Imagen del producto" class="product__media-list__item-img {{! images[5]['thumb_200']|hide_if_empty}}">
                     </li>
                     <li class="product__media-list__item">
-                        <img src="{{! images[6]['thumb_500'] }}" alt="Imagen del producto" onload="this.onload='';this.src={{! images[6]['thumb_500']}}" class="product__media-list__item-img {{! images[6]['thumb_500']|hide_if_empty}}">
+                        <img src="{{! images[6]['thumb_200'] }}" alt="Imagen del producto" class="product__media-list__item-img {{! images[6]['thumb_200']|hide_if_empty}}">
                     </li>
                 </ul>
             </div>
@@ -41,17 +41,35 @@
                     <h3 class="text text--color-dark text--weight-med">SELECCIONAR UNA TALLA</h3>
                     <h3 class="text text--color-tertiary open-popup" data-popup="sizes">No sabes tu talla?</h3>
                 </div>
-                <div class="u-padding-vertical-small product__size-list">
-                    <li class="product__size-list__item">35</li>
-                    <li class="product__size-list__item">36</li>
-                    <li class="product__size-list__item">37</li>
-                    <li class="product__size-list__item">38</li>
-                    <li class="product__size-list__item">39</li>
-                    <li class="product__size-list__item">40</li>
-                </div>
+                <span class="ecommerce-sizes" >
+                    <!-- <div class="u-padding-vertical-small product__size-list">
+                        <li class="product__size-list__item">35</li>
+                        <li class="product__size-list__item">36</li>
+                        <li class="product__size-list__item">37</li>
+                        <li class="product__size-list__item">38</li>
+                        <li class="product__size-list__item">39</li>
+                        <li class="product__size-list__item">40</li>
+                    </div> -->
+                </span>
                 <div class="product__size-btns">
-                    <button class="btn btn--text-small btn--round btn--half">AGREGAR AL CARRO <i class="fa fa-shopping-cart btn__icon"></i></button>
-                    <button class="btn btn--text-small btn--round btn--half btn--secondary">COMPRAR AHORA <i class="fa fa-angle-right btn__icon btn__icon--big"></i></button>
+                    <button
+                        lp-cart-add
+                        product-upp="{{! upp }}"
+                        product-name="{{! name }}"
+                        product-price="{{! main_price }}"
+                        product-sku="{{! sku }}"
+                        product-id="{{! id }}"
+                        product-img="{{! images[1]['thumb_500'] }}"
+                        class="btn btn--text-small btn--round btn--half">AGREGAR AL CARRO <i class="fa fa-shopping-cart btn__icon"></i></button>
+                    <button
+                        lp-cart-add
+                        product-upp="{{! upp }}"
+                        product-name="{{! name }}"
+                        product-price="{{! main_price }}"
+                        product-sku="{{! sku }}"
+                        product-id="{{! id }}"
+                        product-img="{{! images[1]['thumb_500'] }}"
+                        class="btn btn--text-small btn--round btn--half btn--secondary">COMPRAR AHORA <i class="fa fa-angle-right btn__icon btn__icon--big"></i></button>
                 </div>
             </div>
             <div class="product__description">

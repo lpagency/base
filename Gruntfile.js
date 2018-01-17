@@ -13,7 +13,7 @@ module.exports = function (grunt) {
           expand: true,
           cwd: 'static/css',
           src: ['**/*.scss'],
-          dest: 'static/css',
+          dest: 'static/css/compiled',
           ext: '.css'
       }]
       }
@@ -22,41 +22,41 @@ module.exports = function (grunt) {
       options: {
         map: false,
         processors: [
-      require('autoprefixer')({
-            browsers: ['last 2 versions']
-          })
-    ]
+            require('autoprefixer')({
+                browsers: ['last 2 versions']
+            })
+        ]
       },
       dist: {
-        src: 'css/main.css'
+        src: 'css/compiled/main.css'
       }
     },
     cssmin: { // Begin CSS Minify Plugin
       target: {
         files: [{
           expand: true,
-          cwd: 'static/css',
+          cwd: 'static/css/compiled',
           src: ['*.css', '!*.min.css'],
-          dest: 'static/css',
+          dest: 'static/css/compiled',
           ext: '.min.css'
     }]
       }
     },
-    // uglify: { // Begin JS Uglify Plugin
-    //   build: {
-    //     src: ['src/*.js'],
-    //     dest: 'js/script.min.js'
-    //   }
-    // },
+    uglify: { // Begin JS Uglify Plugin
+      build: {
+        src: ['static/js/app.js'],
+        dest: 'static/js/app.min.js'
+      }
+    },
     watch: { // Compile everything into one task with Watch Plugin
       css: {
         files: '**/*.scss',
         tasks: ['sass', 'postcss', 'cssmin']
       },
-      // js: {
-      //   files: '**/*.js',
-      //   tasks: ['uglify']
-      // }
+      js: {
+        files: 'static/js/app.js',
+        tasks: ['uglify']
+      }
     }
   });
   // Load Grunt plugins

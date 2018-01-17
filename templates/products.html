@@ -136,10 +136,10 @@
                     <h4 class="dropdown__label text text--light">Ordenar por:</h4>
                     <i class="fa fa-caret-down dropdown__arrow"></i>
                     <ul class="dropdown__list">
-                        <li class="dropdown__list-item">Precio: Mayor a menor</li>
-                        <li class="dropdown__list-item">Precio: Menor a mayor</li>
-                        <li class="dropdown__list-item">Nombre</li>
-                        <li class="dropdown__list-item">Aleatorio</li>
+                        <li class="dropdown__list-item" dropdown-val="main_price,desc" >Precio: Mayor a menor</li>
+                        <li class="dropdown__list-item" dropdown-val="main_price,asc" >Precio: Menor a mayor</li>
+                        <li class="dropdown__list-item" dropdown-val="name,asc" >Nombre</li>
+                        <li class="dropdown__list-item" dropdown-val="random,asc" >Aleatorio</li>
                     </ul>
                 </div>
             </div>
@@ -243,6 +243,7 @@
             <div class="section-products__content">
                 <div class="section-products__content-row">
                     <!-- product list or detail goes here -->
+                    {% include 'components/product-list-loader.html' %}
                 </div>
                 <button class="btn btn--centered btn--half text text--weight-med text--title text--color-tertiary btn--small btn--tertiary">CARGAR MÁS PRODUCTOS</button>
             </div>
@@ -250,6 +251,11 @@
     </div>
 </div>
 
+{% end %}
+
+
+{% block head %}
+<style media="screen">{% include '../static/css/compiled/product_preload.min.css' %}</style>
 {% end %}
 
 <!-- ALWAYS PUT JS INSIDE THIS BLOCK AND MAKE THEM ASYNCH -->
@@ -263,20 +269,37 @@
     // Shopping cart
     // =============
     window.addEventListener('DOMContentLoaded', function() {
-        (function($) {
-            $(document).ready(function() {
+        (function($){
+            var show_products = function(sort_field, dir)
+            {
+                $(".section-products__content-row").ecommerce('destroy');
                 $(".section-products__content-row").ecommerce({
-                    'app_public': 53,
-                    'base_url': 'https://apibodegas.loadingplay.com/',
-                    'products_per_page' : 9,
-                    'tag': '',
-                    'ignore_stock': false,
-                    'infinite_scroll': true,
-                    'checkout_url': 'https://checkout.loadingplay.com',
-                    'operator' :'or',
-                    'templateOrigin': '#product_template'
+                    app_public: 53,
+                    base_url: 'https://apibodegas.loadingplay.com/',
+                    products_per_page : 9,
+                    tag: '',
+                    ignore_stock: false,
+                    infinite_scroll: true,
+                    checkout_url: 'https://checkout.loadingplay.com',
+                    operator :'or',
+                    templateOrigin: '#product_template',
+                    column: sort_field,
+                    direction: dir,
+                    onLoad: function()
+                    {
+                        $('.product-list-loader').remove()
+                    }
                 });
+            };
+
+            $('.dropdown').dropdown().on('change', function(e, value)
+            {
+                var sort_field = value.split(",")[0];
+                var dir = value.split(",")[1];
+                show_products(sort_field, dir);
             });
+
+            show_products('main_price', 'asc');
         })(jQuery);
     });
 </script>

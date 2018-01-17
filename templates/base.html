@@ -5,12 +5,14 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Placare.com - Tienda Online de Zapatos para Mujer y Hombre.</title>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
-    <link rel="stylesheet" href="{{site_base}}/static/css/main.min.css">
+
+    <!--- preload the basic css for rendering the upper section -->
+    <style media="screen">{% include '../static/css/compiled/preload.min.css' %}</style>
+    {% block head %}
+    {% end %}
 </head>
 
 <body>
-
     <header class="header">
         <div class="u-padding-vertical-smaller header__sub">
             <div class="container header__sub-content">
@@ -85,7 +87,7 @@
                         <div class="menu__actions-item menu__bag open-popup" data-popup="shopping-bag">
                             <div class="shopping-bag">
                                 <img src="{{ site_base }}/static/images/buscar.png" alt="Buscar" class="menu__actions-item menu__searchbar-trigger">
-                                <p class="text text--light text--color-light shopping-bag__copy">Tu Compra 0</p>
+                                <p class="text text--light text--color-light shopping-bag__copy">Tu Compra <span class="units-total">0</span></p>
                                 <img src="{{ site_base }}/static/images/bolsa.png" alt="Bolsa de compras" class="shopping-bag__icon">
                             </div>
                         </div>
@@ -274,7 +276,7 @@
                 <span class="close-popup popup__close" data-popup="shopping-bag">&times;</span>
             </div>
             <div class="popup__main">
-                <table class="table">
+                <table class="table ">
                     <tr class="table__row">
                         <th class="text text--color-dark text--bold table__cell">Nombre</th>
                         <th class="text text--color-dark text--bold table__cell">Talla</th>
@@ -282,30 +284,13 @@
                         <th class="text text--color-dark text--bold table__cell table__cell--center">Precio</th>
                         <th class="text text--color-dark text--bold table__cell table__cell--center">Eliminar</th>
                     </tr>
-                    <tr class="table__row">
-                        <th class="text text--color-dark table__cell">Sandalia Dorada Baubo</th>
-                        <th class="text text--color-dark table__cell">37</th>
-                        <th class="text text--color-dark table__cell table__cell--center">
-                            <span class="remove-one">-</span>1
-                            <span class="add-one">+</span>
-                        </th>
-                        <th class="text text--color-dark table__cell table__cell--center">$9.990</th>
-                        <th class="text text--color-dark table__cell table__cell--center remove-item">X</th>
-                    </tr>
-                    <tr class="table__row">
-                        <td class="text text--color-dark text--bold table__cell">Total:</td>
-                        <td class="table__cell"></td>
-                        <td class="table__cell"></td>
-                        <td class="text text--color-dark text--bold table__cell table__cell--center">$9.990</td>
-                        <td class="table__cell"></td>
-                    </tr>
+                    <tbody class="shopping-cart" >
+                        <!-- products here -->
+                    </tbody>
                 </table>
             </div>
-            <div class="popup__footer">
-                <div class="popup__btns">
-                    <a href="#" class="close-popup btn" data-popup="shopping-bag">VOLVER</a>
-                    <a href="#" class="btn">PAGAR</a>
-                </div>
+            <div class="popup__footer checkout-form">
+                <!-- checkout buttons here -->
             </div>
         </div>
     </div>
@@ -443,44 +428,56 @@
             </div>
         </div>
     </div>
-
-    <script
-        src="https://code.jquery.com/jquery-2.2.4.min.js"
-        integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44="
-        crossorigin="anonymous" ></script>
-
-    <script
-        type="text/javascript"
-        src="{{ site_base }}/common/js/jquery.cookie.min.js?1" ></script>
-
-    <script defer="defer" src="{{site_base}}/static/js/app.js"></script>
-
-    {% block javascript %}{% end %}
-
-    {% if is_admin %}
-    <!-- admin -->
-    <!-- this block is executed only because you are logged in as page admin -->
-
-    <!-- content manager include -->
-    <link rel="stylesheet" href="{{get_contentmanager_url()}}/api/include.css">
-    <script defer="defer" type="text/javascript" src="{{get_contentmanager_url()}}/api/include.js" ></script>
-    <script defer="defer" type="text/javascript">
-    window.addEventListener('DOMContentLoaded', function() {
-        (function($) {
-            $(document).ready(function() {
-
-                $.contentmanager({
-                    'base_url': '{{ get_contentmanager_url() }}',
-                    'site': '{{ site.name }}'
-                });
-            });
-        })(jQuery);
-    });
-    </script>
-    <!-- /contentmanager include -->
-    <!-- /admin -->
-    {% end %}
-
 </body>
 
 </html>
+
+
+<script
+    src="https://code.jquery.com/jquery-2.2.4.min.js"
+    integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44="
+    crossorigin="anonymous"
+    defer ></script>
+<script defer="defer" src="{{site_base}}/static/js/app.min.js"></script>
+
+{% include 'components/shopping-cart-item.html' %}
+{% block javascript %}{% end %}
+
+<noscript id="deferred-styles">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <style media="screen">{% include '../static/css/compiled/main.min.css' %}</style>
+</noscript>
+<script defer="defer">
+    var loadDeferredStyles = function() {
+        var addStylesNode = document.getElementById("deferred-styles");
+        var replacement = document.createElement("div");
+        replacement.innerHTML = addStylesNode.textContent;
+        document.body.appendChild(replacement)
+        addStylesNode.parentElement.removeChild(addStylesNode);
+    };
+    var raf = window.requestAnimationFrame || window.mozRequestAnimationFrame ||
+        window.webkitRequestAnimationFrame || window.msRequestAnimationFrame;
+    if (raf) raf(function() { window.setTimeout(loadDeferredStyles, 0); });
+    else window.addEventListener('load', loadDeferredStyles);
+</script>
+
+{% if is_admin %}
+<!-- admin -->
+<!-- this block is executed only because you are logged in as page admin -->
+
+<!-- content manager include -->
+<link rel="stylesheet" href="{{get_contentmanager_url()}}/api/include.css">
+<script defer="defer" type="text/javascript" src="{{get_contentmanager_url()}}/api/include.js" ></script>
+<script defer="defer" type="text/javascript">
+window.addEventListener('DOMContentLoaded', function() {
+    (function($) {
+        $.contentmanager({
+            'base_url': '{{ get_contentmanager_url() }}',
+            'site': '{{ site.name }}'
+        });
+    })(jQuery);
+});
+</script>
+<!-- /contentmanager include -->
+<!-- /admin -->
+{% end %}
